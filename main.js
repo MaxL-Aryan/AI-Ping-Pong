@@ -22,8 +22,15 @@ var ball = {
 
 function setup(){
   var canvas =  createCanvas(700,600);
-}
+  canvas.parent("canvas");
 
+  video=createCapture(VIDEO);
+  video.size(700,600);
+  video.hide();
+
+  poseNet=ml5.poseNet(video,modelLoaded);
+  poseNet.on("pose",gotPoses);
+}
 
 function draw(){
 
@@ -64,11 +71,13 @@ function draw(){
    
    //function move call which in very important
     move();
+
+    image(video,0,0,700,600);
 }
 
 
 
-//function reset when ball does notcame in the contact of padde
+//function reset when ball does notcame in the contact of paddel
 function reset(){
    ball.x = width/2+100,
    ball.y = height/2+100;
@@ -160,4 +169,9 @@ function paddleInCanvas(){
   if(mouseY < 0){
     mouseY =0;
   }  
+}
+
+function modelLoaded()
+{
+  console.log('Model Loaded!');
 }
