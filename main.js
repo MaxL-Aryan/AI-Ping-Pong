@@ -1,3 +1,7 @@
+WristX="";
+WristY="";
+score="";
+
 //created by aryan pawar//
 
 var paddle2 =10,paddle1=10;
@@ -27,12 +31,20 @@ function setup(){
   video=createCapture(VIDEO);
   video.size(700,600);
   video.hide();
+  video.parent("game_console");
 
   poseNet=ml5.poseNet(video,modelLoaded);
   poseNet.on("pose",gotPoses);
 }
 
 function draw(){
+
+  if (score>0.2)
+  {
+    fill('#00e5ff');
+    stroke('#00e5ff');
+    circle(WristX,WristY,10);
+  }
 
  background(0); 
 
@@ -174,4 +186,11 @@ function paddleInCanvas(){
 function modelLoaded()
 {
   console.log('Model Loaded!');
+}
+
+function gotPoses(results)
+{
+  WristX=results[0].pose.rightWrist.x;
+  WristY=results[0].pose.rightWrist.y;
+  score=results[0].pose.rightWrist.confidence;
 }
